@@ -1,0 +1,71 @@
+<?php
+// $Id$
+
+/**
+ * Implementation of hook_init().
+ *
+ * Enable popup behavior with admin menu.
+ */
+function popups_admin_ui_init() {
+  if (user_access('admin menu')) {
+    popups_add_popups();
+  }
+}
+
+/**
+ * Implementation of hook_admin_link_alter().
+ *
+ * To improve inline menu for some nodes types.
+ */
+function popups_admin_ui_admin_link_alter(&$links,$type, $object) {
+  if ($type == 'node') {
+
+    // Inline menu for panel node types
+    if ($object->type == 'panel') {
+      unset($links['node-edit'], $links['node-delete']);
+      if (node_access('update', $object)) {
+        $links['node-edit'] = array(
+          'title' => t('Configure'),
+          'href' => "node/{$object->nid}/edit",
+          'attributes' => array('class' => 'icon-configure popups-form-reload'),
+        );
+        $links['node-layout'] = array(
+          'title' => t('Layout'),
+          'href' => "node/{$object->nid}/panel_layout",
+          'attributes' => array('class' => 'icon-configure popups-form-reload'),
+          'query' => array('destination' => $_GET['q']),
+        );
+        $links['node-content'] = array(
+          'title' => t('Content'),
+          'href' => "node/{$object->nid}/panel_content",
+          'attributes' => array('class' => 'icon-edit'),
+          'query' => array('destination' => $_GET['q']),
+        );
+      }
+      if (node_access('delete', $object)) {
+        $links['node-delete'] = array(
+          'title' => t('Delete'),
+          'href' => "node/{$object->nid}/delete",
+          'attributes' => array('class' => 'icon-delete'),
+          'query' => array('destination' => $_GET['q']),
+        );
+      }
+    }
+  }
+
+  return $links;
+}
+
+/**
+ * Implementation of hook_popups().
+ */
+function popups_admin_ui_popups() {
+
+  return array(
+    'node/add/panel/choose-layout' => array(
+      'div.layout-link a' => array(
+        'noUpdate' => true,
+      )
+    )
+  );
+}

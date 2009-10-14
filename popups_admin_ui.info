@@ -1,0 +1,9 @@
+; $Id$
+name = Popups: Admin UI
+description = Uses the Popups API to improve Admin UI helpers.
+package = User interface
+dependencies[] = admin
+dependencies[] = popups
+
+core = 6.x
+version = "6.x-1.0"
