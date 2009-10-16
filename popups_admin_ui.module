@@ -62,9 +62,16 @@ function popups_admin_ui_admin_link_alter(&$links,$type, $object) {
   return $links;
 }
 
+/**
+ * Implementation of hook_preprocess_page().
+ *
+ * Add admin inline menu to editing pages
+ */
 function popups_admin_ui_preprocess_page(&$vars) { 
-  if (isset($vars['node']) && $vars['node']->type == 'panel' && $vars['node']->body == '') // add only to editing page (body == '')
+  // add only to editing page (body == '')
+  if (isset($vars['node']) && $vars['node']->type == 'panel' && $vars['node']->body == '') {
     $vars['content'] =  '<div class="node">' . $vars['content'] . theme('admin_links', admin_get_links('node', $vars['node'])) . '</div>';
+  }
 }
 
 /**
