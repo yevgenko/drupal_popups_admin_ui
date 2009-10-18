@@ -62,7 +62,7 @@ function popups_admin_ui_admin_link_alter(&$links,$type, $object) {
   return $links;
 }
 
-function popups_admin_ui_preprocess_page(&$vars) { 
+function popups_admin_ui_preprocess_page(&$vars) {
   if (isset($vars['node']) && $vars['node']->type == 'panel' && $vars['node']->body == '') // add only to editing page (body == '')
     $vars['content'] =  '<div class="node">' . $vars['content'] . theme('admin_links', admin_get_links('node', $vars['node'])) . '</div>';
 }
@@ -75,8 +75,28 @@ function popups_admin_ui_popups() {
   return array(
     'node/add/panel/choose-layout' => array(
       'div.layout-link a' => array(
-        'noUpdate' => true,
+        'updateMethod' => 'reload',
+        'updateSource' => 'final',
       )
     )
+  );
+}
+
+/**
+ * Implementation of hook_form_alter().
+ */
+function popups_admin_ui_form_alter(&$form, $form_state, $form_id) {
+  if ($form_id == 'panel_node_form') {
+    $form['buttons']['submit']['#submit'][] = 'popups_admin_ui_form_submit';
+  }
+}
+
+/**
+* Custom submit handler. Overwrites the form redirection variable.
+*/
+function popups_admin_ui_form_submit($form, &$form_state) {
+  $form_state['redirect'] = array(
+    'node/'.$form_state['nid'],
+    'destination=node/'.$form_state['nid']
   );
 }
