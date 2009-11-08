@@ -1,3 +1,6 @@
 .node-type-panel .tabs { display: none } 
 .popups-box { text-align: left }
 .vertical-tabs-list li { list-style-type: none }
+
+#popups-overlay { z-index: 140; }
+.popups-box { z-index: 150; }
