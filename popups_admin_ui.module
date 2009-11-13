@@ -42,7 +42,7 @@ function popups_admin_ui_admin_link_alter(&$links,$type, $object) {
           'query' => array('destination' => "node/{$object->nid}"),
         );
         $links['node-content'] = array(
-          'title' => t('Content'),
+          'title' => t('Edit Content'),
           'href' => "node/{$object->nid}/panel_content",
           'attributes' => array('class' => 'icon-edit'),
           'query' => array('destination' => $_GET['q']),
